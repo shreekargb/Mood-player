@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>MoodPlayer</title>
+    </head>
+    <body class="bg-gray-900 text-white font-sans flex flex-col items-center justify-center min-h-screen p-5">
+        
+        <h1 class="text-4xl font-bold mb-6 text-blue-400">MoodPlayer</h1>
+        <p class="mb-6 text-gray-400">Let's play the perfect song based on your current emotion.</p>
+
+        <!-- Camera Feed Container -->
+        <div class="relative border-4 border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
+            <img src='/video_feed' class="w-[640px] h-[480px] bg-black">
+        </div>
+
+        <!-- Action Button -->
+        <button onclick="captureEmotion()" 
+                class="mt-8 px-8 py-4 bg-blue-600 hover:bg-blue-500 transition-all rounded-full font-bold text-lg shadow-lg transform hover:scale-105 active:scale-95">
+            Capture Mood & Play Music
+        </button>
+
+        <script>
+            function captureEmotion() {
+                const btn = document.querySelector('button');
+                btn.innerText = "Analyzing...";
+                btn.disabled = true;
+
+                fetch('/get_emotion')
+                .then(response => response.json())
+                .then(data => {
+                    const emotion = data.emotion;
+                    console.log("Detected: " + emotion);
+                    window.location.href = "https://www.youtube.com/results?search_query=" + emotion + "+songs";
+                });
+            }
+        </script>
+    </body>
+    </html>
